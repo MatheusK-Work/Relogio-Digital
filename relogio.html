@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relógio Digital</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="time">
+        <div class="circle" style="--clr:#5bff29;">
+            <div class="dots hr_dot"></div>
+            <svg>
+                <circle cx="70" cy="70" r="70" stroke="none" fill="none"></circle>
+                <circle cx="70" cy="70" r="70" id="hh"></circle>
+            </svg>
+            <div id="hours">00</div>
+        </div>
+        <div class="circle" style="--clr:red;">
+            <div class="dots min_dot"></div>
+            <svg>
+                <circle cx="70" cy="70" r="70" stroke="none" fill="none"></circle>
+                <circle cx="70" cy="70" r="70" id="mn"></circle>
+            </svg>
+            <div id="minutes">00</div>
+        </div>
+        <div class="circle" style="--clr:yellow;">
+            <div class="dots sec_dot"></div>
+            <svg>
+                <circle cx="70" cy="70" r="70" stroke="none" fill="none"></circle>
+                <circle cx="70" cy="70" r="70" id="ss"></circle>
+            </svg>
+            <div id="seconds">00</div>
+        </div>
+        <div class="ap">
+            <div id="anpm">AM</div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const hours = document.getElementById('hours');
+            const minutes = document.getElementById('minutes');
+            const seconds = document.getElementById('seconds');
+            const ampm = document.getElementById('anpm');
+
+            const hh = document.getElementById('hh');
+            const mm = document.getElementById('mn');
+            const ss = document.getElementById('ss');
+
+            const hr_dot = document.querySelector('.hr_dot');
+            const min_dot = document.querySelector('.min_dot');
+            const sec_dot = document.querySelector('.sec_dot');
+
+            const now = new Date();
+            let h = now.getHours();
+            let m = now.getMinutes();
+            let s = now.getSeconds();
+            const am = h >= 12 ? "PM" : "AM";
+
+            if (h > 12) {
+                h -= 12;
+            } else if (h === 0) {
+                h = 12; // Midnight case
+            }
+
+            h = (h < 10) ? "0" + h : h;
+            m = (m < 10) ? "0" + m : m;
+            s = (s < 10) ? "0" + s : s;
+
+            hours.innerHTML = h + "<br><span></span>";
+            minutes.innerHTML = m + "<br><span></span>";
+            seconds.innerHTML = s + "<br><span></span>";
+            ampm.innerHTML = am;
+
+            hh.style.strokeDashoffset = 440 - (440 * h) / 12;
+            mm.style.strokeDashoffset = 440 - (440 * m) / 60;
+            ss.style.strokeDashoffset = 440 - (440 * s) / 60;
+
+            hr_dot.style.transform = `rotate(${h * 30}deg)`;
+            min_dot.style.transform = `rotate(${m * 6}deg)`;
+            sec_dot.style.transform = `rotate(${s * 6}deg)`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // Initial call to set the clock immediately
+    </script>
+</body>
+</html>
